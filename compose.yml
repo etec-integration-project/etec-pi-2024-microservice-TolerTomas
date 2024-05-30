@@ -1,0 +1,17 @@
+services:
+
+  file-server-backend-app:
+    build:
+      context: .
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - AUTH_SERVER_ADDRESS=127.0.0.1:5050
+      - AUTH_SERVER_USERNAME=file-server
+      - AUTH_SERVER_PASSWORD=12345678
+    networks:
+      - file-server-express-app
+
+networks:
+  file-server-express-app:
