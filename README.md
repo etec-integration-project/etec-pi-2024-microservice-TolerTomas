@@ -13,3 +13,11 @@ cd etc-pi-2024-microservice-TolerTomas
 ```bash
 docker compose up --build
 ```
+
+## Testear la app
+El ultimo mensaje que da el contenedor deberia ser parecido a 
+```json
+{
+    "auth-server-token": "<jwt-token>"
+}
+``` 
