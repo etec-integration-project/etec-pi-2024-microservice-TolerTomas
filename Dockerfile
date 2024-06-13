@@ -18,6 +18,6 @@ RUN pnpm install
 
 COPY . .
 
-EXPOSE 58080
+EXPOSE 8080
 
 CMD [ "pnpm", "run", "dev" ]
