@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import axios from "axios";
 
 export const isAuth = async (req: Request, res: Response, next: NextFunction) => {
-    const user_jwt: string = req.cookies['express-jwt-toler-app'] as string
+    const user_jwt = req.cookies['express-jwt-toler-app'] as string
     
     if (!user_jwt) { return res.json({ 'error': 'unauthorized' }) }
 
