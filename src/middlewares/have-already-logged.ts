@@ -12,12 +12,17 @@ export const haveAlreadyLogged = async (req: Request, res: Response, next: NextF
         )
         .then(res => res.data)
         .then(async (data) => {
-            if (data.msg === 'user alredy logged' )
+
+            req.body.user = data.user
+
+            if (data.msg === 'user alredy logged' ) {
                 return next()
+            }
             
             if (data.msg === 'user updated') {
                 console.log('creando carpetas')
-                await mkdir(`${process.env.STORAGE_URL}/${data.user.id}`)
+                // req.body.user = data.user
+                await mkdir(`${__dirname}/../../${process.env.STORAGE_URL}/${data.user.id}`)
                 return next()
             }
 
