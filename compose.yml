@@ -10,7 +10,7 @@ services:
       - AUTH_SERVER_ADDRESS=auth-backend-app
       - AUTH_SERVER_USERNAME=file-server
       - AUTH_SERVER_PASSWORD=12345678
-      - STORAGE_URL=/app/storage
+      - STORAGE_URL=/app-storage
     volumes:
       - ./app-storage:/app/storage
     networks:

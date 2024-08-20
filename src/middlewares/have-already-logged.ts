@@ -1,6 +1,8 @@
 import axios from "axios";
 import { mkdir } from "fs/promises";
 import { Request, Response, NextFunction } from "express";
+import { join } from "path";
+
 
 export const haveAlreadyLogged = async (req: Request, res: Response, next: NextFunction) => {
     const user_jwt = req.cookies['express-jwt-toler-app'] as string
@@ -21,8 +23,7 @@ export const haveAlreadyLogged = async (req: Request, res: Response, next: NextF
             
             if (data.msg === 'user updated') {
                 console.log('creando carpetas')
-                // req.body.user = data.user
-                await mkdir(`${__dirname}/../../${process.env.STORAGE_URL}/${data.user.id}`)
+                await mkdir(join(...`${__dirname}/../../${process.env.STORAGE_URL}/${data.user.id}`.split('/')))
                 return next()
             }
 

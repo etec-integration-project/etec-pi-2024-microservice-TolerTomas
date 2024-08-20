@@ -4,30 +4,16 @@ import { haveAlreadyLogged } from "../middlewares/have-already-logged";
 import { Request, Response} from "express";
 import { mkdir } from "fs/promises";
 import { join as pathjoin } from "path";
+import { moveFile } from "../files/move";
 
 const fileRouter = Router()
 
 fileRouter.use(isAuth)
 fileRouter.use(haveAlreadyLogged)
 
-fileRouter.get('/test', (req: Request, res: Response) => {
-    
-    console.log({ req })
-
-    return res.send('Server is on')
-})
-
 fileRouter.post('/mkdir', async (req: Request, res: Response) => {
 
     const { path, newDir } = req.body
-
-    const finalDir = path == '-'
-        ? '/'
-        : (path as string).endsWith('/')
-            ? (path as string).concat(newDir)
-            : (path as string).concat('/').concat(newDir)
-
-    console.log(req.body)
 
     mkdir(
         pathjoin(__dirname, '..', '..', 'app-storage', req.body.user.id, ...(path as string).split('/'), newDir)
@@ -44,8 +30,28 @@ fileRouter.post('/mkdir', async (req: Request, res: Response) => {
                         : (path as string).concat('/').concat(newDir)
             })
         })
+})
 
-    
+fileRouter.post('/upload', async (req: Request, res: Response) => {
+
+    const { path } = req.body
+
+    if (!req.files || Object.keys(req.files).length === 0)
+        return res.status(400).send('No files were uploaded')
+
+    let files = req.files.file;
+    if (!Array.isArray(files)) {
+        files = [files];
+    } 
+
+    for await (let file of files) {
+        moveFile(file, pathjoin(__dirname, '..', '..', 'app-storage', req.body.user.id, ...(path as string).split('/')))
+            .catch(err => res.status(400).json({ err }) )
+    }
+
+    return res.status(200).json({
+        'message': 'Files successfully uploaded'
+    })
 })
 
 export default fileRouter
