@@ -2,7 +2,7 @@ import { Router } from "express";
 import { isAuth } from "../middlewares/isAuth";
 import { haveAlreadyLogged } from "../middlewares/have-already-logged";
 import { Request, Response} from "express";
-import { mkdir } from "fs/promises";
+import { mkdir, opendir } from "fs/promises";
 import { join as pathjoin } from "path";
 import { moveFile } from "../files/move";
 
@@ -52,6 +52,28 @@ fileRouter.post('/upload', async (req: Request, res: Response) => {
     return res.status(200).json({
         'message': 'Files successfully uploaded'
     })
+})
+
+fileRouter.get('/list', async (req: Request, res: Response) => {
+    const { path } = req.body
+
+    let content: {
+        files: string[],
+        directories: string[]
+    } = {
+        files: [],
+        directories: []
+    }
+
+    const directory = await opendir(pathjoin(__dirname, '..', '..', 'app-storage', req.body.user.id, ...(path as string).split('/')))
+
+    for await (const dir of directory) {
+        if (dir.isDirectory()) content.directories.push(dir.name)
+            else if (dir.isFile()) content.files.push(dir.name)
+    }
+
+    return res.status(200).json({ content, path })
+
 })
 
 export default fileRouter
