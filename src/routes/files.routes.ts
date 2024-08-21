@@ -1,79 +1,17 @@
 import { Router } from "express";
 import { isAuth } from "../middlewares/isAuth";
 import { haveAlreadyLogged } from "../middlewares/have-already-logged";
-import { Request, Response} from "express";
-import { mkdir, opendir } from "fs/promises";
-import { join as pathjoin } from "path";
-import { moveFile } from "../files/move";
+import { createdir, listdir, uploadfile } from "../controllers/files-controller";
 
 const fileRouter = Router()
 
 fileRouter.use(isAuth)
 fileRouter.use(haveAlreadyLogged)
 
-fileRouter.post('/mkdir', async (req: Request, res: Response) => {
+fileRouter.post('/mkdir', createdir)
 
-    const { path, newDir } = req.body
+fileRouter.post('/upload', uploadfile)
 
-    mkdir(
-        pathjoin(__dirname, '..', '..', 'app-storage', req.body.user.id, ...(path as string).split('/'), newDir)
-    )
-        .then(() => {
-            return res.json({
-                __dirname,
-                path: path,
-                newDir,
-                finalDir: path == '-'
-                    ? '/'
-                    : (path as string).endsWith('/')
-                        ? (path as string).concat(newDir)
-                        : (path as string).concat('/').concat(newDir)
-            })
-        })
-})
-
-fileRouter.post('/upload', async (req: Request, res: Response) => {
-
-    const { path } = req.body
-
-    if (!req.files || Object.keys(req.files).length === 0)
-        return res.status(400).send('No files were uploaded')
-
-    let files = req.files.file;
-    if (!Array.isArray(files)) {
-        files = [files];
-    } 
-
-    for await (let file of files) {
-        moveFile(file, pathjoin(__dirname, '..', '..', 'app-storage', req.body.user.id, ...(path as string).split('/')))
-            .catch(err => res.status(400).json({ err }) )
-    }
-
-    return res.status(200).json({
-        'message': 'Files successfully uploaded'
-    })
-})
-
-fileRouter.get('/list', async (req: Request, res: Response) => {
-    const { path } = req.body
-
-    let content: {
-        files: string[],
-        directories: string[]
-    } = {
-        files: [],
-        directories: []
-    }
-
-    const directory = await opendir(pathjoin(__dirname, '..', '..', 'app-storage', req.body.user.id, ...(path as string).split('/')))
-
-    for await (const dir of directory) {
-        if (dir.isDirectory()) content.directories.push(dir.name)
-            else if (dir.isFile()) content.files.push(dir.name)
-    }
-
-    return res.status(200).json({ content, path })
-
-})
+fileRouter.get('/list', listdir)
 
 export default fileRouter
