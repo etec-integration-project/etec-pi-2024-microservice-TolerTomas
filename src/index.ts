@@ -39,12 +39,12 @@ app.listen(PORT, () => {
 					})
 						.then(response => response.json())
 						.then(data => {
-							auth_server_token = data.data.token;
+							auth_server_token = data.token;
 							console.log({ auth_server_token });
 							return;
 						});
 				}
-				auth_server_token = data.data.token;
+				auth_server_token = data.token;
 				console.log({ auth_server_token });
 				return;
 			});
