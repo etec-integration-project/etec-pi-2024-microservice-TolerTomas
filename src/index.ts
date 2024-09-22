@@ -25,8 +25,8 @@ app.listen(PORT, () => {
 			if (data.data.error) {
 				axios
 					.post(
-						(("http://" + process.env.AUTH_SERVER_ADDRESS) as string) +
-							":5050/api/servers/register",
+						//(("http://" + process.env.AUTH_SERVER_ADDRESS) as string) + ":5050/api/servers/register",
+						"/api/servers/login",
 						{
 							name: process.env.AUTH_SERVER_USERNAME as string,
 							password: process.env.AUTH_SERVER_PASSWORD as string,
