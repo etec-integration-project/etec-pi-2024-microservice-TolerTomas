@@ -14,7 +14,7 @@ app.listen(PORT, () => {
 
 	while (auth_server_token == null) {
 
-		fetch(`http://${process.env.AUTH_SERVER_ADDRESS}:5050/api/servers/login`, {
+		fetch(`http://${process.env.AUTH_SERVER_ADDRESS as string}:5050/api/servers/login`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ app.listen(PORT, () => {
 			.then(data => {
 				console.log({ data });
 				if (data.data.error) {
-					fetch(`http://${process.env.AUTH_SERVER_ADDRESS}:5050/api/servers/register`, {
+					fetch(`http://${process.env.AUTH_SERVER_ADDRESS as string}:5050/api/servers/register`, {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
