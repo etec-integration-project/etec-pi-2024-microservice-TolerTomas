@@ -11,7 +11,7 @@ app.listen(PORT, async () => {
 	console.log("[FILE SERVER SERVICE]");
 	console.log("[SERVER] listening on port " + PORT);
 
-	while (auth_server_token == null) {
+	for (let i = 0; i < 10; i++) {
 
 		let res = await axios.post(`http://${process.env.AUTH_SERVER_ADDRESS as string}:5050/api/servers/login`, {
 			name: process.env.AUTH_SERVER_USERNAME as string,
@@ -25,7 +25,7 @@ app.listen(PORT, async () => {
 			})
 		}
 
-		if (res.data.oken) {
+		if (res.data.token) {
 			auth_server_token = res.data.token;
 			console.log({ auth_server_token });
 		}
