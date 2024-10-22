@@ -14,13 +14,13 @@ app.listen(PORT, async () => {
 	while (auth_server_token == null) {
 
 		let res = await axios.post(`http://${process.env.AUTH_SERVER_ADDRESS as string}:5050/api/servers/login`, {
-			username: process.env.AUTH_SERVER_USERNAME as string,
+			name: process.env.AUTH_SERVER_USERNAME as string,
 			password: process.env.AUTH_SERVER_PASSWORD as string,
 		})
 
 		if (res.data.error) {
 			res = await axios.post(`http://${process.env.AUTH_SERVER_ADDRESS as string}:5050/api/servers/register`, {
-				username: process.env.AUTH_SERVER_USERNAME as string,
+				name: process.env.AUTH_SERVER_USERNAME as string,
 				password: process.env.AUTH_SERVER_PASSWORD as string,
 			})
 		}
