@@ -1,0 +1,24 @@
+services:
+
+  file-server-backend-app:
+    build:
+      context: .
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - AUTH_SERVER_ADDRESS=auth-backend-app
+      - AUTH_SERVER_USERNAME=file-server
+      - AUTH_SERVER_PASSWORD=12345678
+      - STORAGE_URL=/app-storage
+    volumes:
+      - ./app-storage:/app/storage
+    networks:
+      - toler-express-apps
+
+networks:
+  toler-express-apps:
+    external: true
+
+volumes:
+  app-storage:
