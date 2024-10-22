@@ -9,8 +9,8 @@ export const createdir = async (req: Request, res: Response) => {
 
     mkdir(
         path === '/'
-            ? pathjoin(__dirname, '..', '..', `${process.env.AUTH_SERVER_ADDRESS as string}`, req.body.user.id, newDir) 
-            : pathjoin(__dirname, '..', '..', `${process.env.AUTH_SERVER_ADDRESS as string}`, req.body.user.id, ...(path as string).split('/'), newDir) 
+            ? pathjoin(__dirname, '..', '..', `${process.env.STORAGE_URL as string}`, req.body.user.id, newDir) 
+            : pathjoin(__dirname, '..', '..', `${process.env.STORAGE_URL as string}`, req.body.user.id, ...(path as string).split('/'), newDir) 
     )
         .then(() => {
             return res.json({
