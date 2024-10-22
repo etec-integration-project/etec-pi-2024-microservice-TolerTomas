@@ -23,7 +23,7 @@ export const haveAlreadyLogged = async (req: Request, res: Response, next: NextF
             
             if (data.msg === 'user updated') {
                 console.log('creando carpetas')
-                await mkdir(join(...`${__dirname}/../../${process.env.STORAGE_URL}/${data.user.id}`.split('/')))
+                await mkdir('/' + join(...`${__dirname}/../../${process.env.STORAGE_URL}/${data.user.id}`.split('/')))
                 return next()
             }
 
