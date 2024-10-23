@@ -17,7 +17,7 @@ export const createdir = async (req: Request, res: Response) => {
                 __dirname,
                 path: path,
                 newDir,
-                finalDir: path == '-'
+                finalDir: path == '/'
                     ? '/'
                     : (path as string).endsWith('/')
                         ? (path as string).concat(newDir)
