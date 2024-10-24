@@ -51,6 +51,8 @@ export const uploadfile = async (req: Request, res: Response) => {
 export const listdir = async (req: Request, res: Response) => {
     const { path } = req.body
 
+    console.log(path)
+
     let content: {
         files: string[],
         directories: string[]
