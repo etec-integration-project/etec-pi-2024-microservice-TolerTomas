@@ -12,6 +12,6 @@ fileRouter.post('/mkdir', createdir)
 
 fileRouter.post('/upload', uploadfile)
 
-fileRouter.get('/list', listdir)
+fileRouter.post('/list', listdir)
 
 export default fileRouter
