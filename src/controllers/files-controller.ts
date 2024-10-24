@@ -59,7 +59,12 @@ export const listdir = async (req: Request, res: Response) => {
         directories: []
     }
 
-    const directory = await opendir(pathjoin('app', 'app-storage', req.body.user.id, ...(path as string).split('/')))
+    const directory =
+        await opendir(
+            path === '/'
+                ? pathjoin('app', `${process.env.STORAGE_URL as string}`, req.body.user.id) 
+                : pathjoin('app', `${process.env.STORAGE_URL as string}`, req.body.user.id, ...(path as string).split('/'))
+        )
 
     for await (const dir of directory) {
         if (dir.isDirectory()) content.directories.push(dir.name)
