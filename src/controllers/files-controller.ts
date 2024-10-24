@@ -9,8 +9,8 @@ export const createdir = async (req: Request, res: Response) => {
 
     mkdir(
         path === '/'
-            ? pathjoin('app', `${process.env.STORAGE_URL as string}`, req.body.user.id, newDir) 
-            : pathjoin('app', `${process.env.STORAGE_URL as string}`, req.body.user.id, ...(path as string).split('/'), newDir) 
+            ? pathjoin('/', 'app', `${process.env.STORAGE_URL as string}`, req.body.user.id, newDir) 
+            : pathjoin('/', 'app', `${process.env.STORAGE_URL as string}`, req.body.user.id, ...(path as string).split('/'), newDir) 
     )
         .then(() => {
             return res.json({
@@ -39,7 +39,7 @@ export const uploadfile = async (req: Request, res: Response) => {
     } 
 
     for await (let file of files) {
-        moveFile(file, pathjoin('app', 'app-storage', req.body.user.id, ...(path as string).split('/')))
+        moveFile(file, pathjoin('/', 'app', 'app-storage', req.body.user.id, ...(path as string).split('/')))
             .catch(err => res.status(400).json({ err }) )
     }
 
@@ -63,9 +63,9 @@ export const listdir = async (req: Request, res: Response) => {
 
     const directory =
         await opendir(
-            path == '/'
-                ? pathjoin('app', `${process.env.STORAGE_URL as string}`, req.body.user.id) 
-                : pathjoin('app', `${process.env.STORAGE_URL as string}`, req.body.user.id, ...(path as string).split('/'))
+            (path as string) === '/'
+                ? pathjoin('/', 'app', `${process.env.STORAGE_URL as string}`, req.body.user.id) 
+                : pathjoin('/', 'app', `${process.env.STORAGE_URL as string}`, req.body.user.id, ...(path as string).split('/'))
         )
 
     for await (const dir of directory) {
