@@ -41,6 +41,7 @@ export const createdir = async (req: Request, res: Response) => {
 export const uploadfile = async (req: Request, res: Response) => {
 	const { path } = req.body;
 
+    console.log(req);
     console.log(path);
 
 	if (!req.files || Object.keys(req.files).length === 0)
