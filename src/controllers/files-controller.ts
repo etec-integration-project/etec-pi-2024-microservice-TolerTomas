@@ -129,5 +129,14 @@ export const downloadfile = async (req: Request, res: Response) => {
 
 	return res
         .status(200)
-        .download(path as string, path.split("/").pop());
+        .download(
+            pathjoin(
+                "/",
+                "app",
+                `${process.env.STORAGE_URL as string}`,
+                req.body.user.id,
+                ...(path as string).split("/")
+            )
+        )
+        // .download(path as string, path.split("/").pop());
 };
