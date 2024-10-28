@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { mkdir, opendir } from "fs/promises";
+import { mkdir, opendir} from "fs/promises";
 import { join as pathjoin } from "path";
 import { moveFile } from "../files/move";
 
@@ -122,4 +122,12 @@ export const listdir = async (req: Request, res: Response) => {
 	}
 
 	return res.status(200).json({ content, path });
+};
+
+export const downloadfile = async (req: Request, res: Response) => {
+	const { path } = req.body;
+
+	return res
+        .status(200)
+        .download(path as string, path.split("/").pop());
 };

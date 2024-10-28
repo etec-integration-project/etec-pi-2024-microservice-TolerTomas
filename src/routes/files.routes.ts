@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { isAuth } from "../middlewares/isAuth";
 import { haveAlreadyLogged } from "../middlewares/have-already-logged";
-import { createdir, listdir, uploadfile } from "../controllers/files-controller";
+import { createdir, downloadfile, listdir, uploadfile } from "../controllers/files-controller";
 
 const fileRouter = Router()
 
@@ -13,5 +13,7 @@ fileRouter.post('/mkdir', createdir)
 fileRouter.post('/upload', uploadfile)
 
 fileRouter.post('/list', listdir)
+
+fileRouter.post('/download', downloadfile)
 
 export default fileRouter
