@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { mkdir, opendir} from "fs/promises";
+import { mkdir, opendir, unlink } from "fs/promises";
 import { join as pathjoin } from "path";
 import { moveFile } from "../files/move";
 
@@ -139,4 +139,30 @@ export const downloadfile = async (req: Request, res: Response) => {
             )
         )
         // .download(path as string, path.split("/").pop());
+};
+
+export const deletefile = async (req: Request, res: Response) => {
+	const { path } = req.body;
+
+	unlink(
+		path === "/"
+			? pathjoin(
+					"/",
+					"app",
+					`${process.env.STORAGE_URL as string}`,
+					req.body.user.id,
+					path
+			  )
+			: pathjoin(
+					"/",
+					"app",
+					`${process.env.STORAGE_URL as string}`,
+					req.body.user.id,
+					...(path as string).split("/"),
+			  )
+	).then(() => {
+		return res.json({
+			message: "File successfully deleted",
+		});
+	});
 };
